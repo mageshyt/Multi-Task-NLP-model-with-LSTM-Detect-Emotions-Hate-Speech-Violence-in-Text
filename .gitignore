@@ -1,0 +1,44 @@
+# Data files
+data/raw/
+data/processed/
+data/external/
+data/*
+
+# Model files
+models/checkpoints/
+*.h5
+*.pkl
+*.bin
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+
+# OS specific files
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Results and outputs
+results/

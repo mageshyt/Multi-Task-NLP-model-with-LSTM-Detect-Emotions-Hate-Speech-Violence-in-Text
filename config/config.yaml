@@ -1,0 +1,36 @@
+# Project configuration
+
+# Data settings
+data:
+  train_path: "data/processed/train.csv"
+  test_path: "data/processed/test.csv"
+  validation_split: 0.2
+  max_sequence_length: 100
+  
+# Preprocessing settings
+preprocessing:
+  lowercase: true
+  remove_punctuation: true
+  remove_stopwords: true
+  lemmatize: true
+  
+# Model settings
+model:
+  vocab_size: 10000
+  embedding_dim: 100
+  lstm_units: 128
+  dropout_rate: 0.2
+  bidirectional: true
+  
+# Training settings
+training:
+  batch_size: 32
+  epochs: 10
+  learning_rate: 0.001
+  early_stopping_patience: 5
+  
+# Paths
+paths:
+  model_dir: "models"
+  results_dir: "results"
+  logs_dir: "logs"
