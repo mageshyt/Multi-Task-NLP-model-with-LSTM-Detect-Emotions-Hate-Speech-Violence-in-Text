@@ -12,6 +12,10 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import os
 import sys
 
+if 'initialized' not in st.session_state:
+    st.session_state.initialized = True
+    st.session_state.user_input = ""
+
 # Add the project root to the path to import from other modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -176,29 +180,75 @@ def main():
         st.error("Failed to load model or tokenizers. Please check the paths and try again.")
         st.stop()
     
-    # Create tabs
+    # Create a card-like container for the text analysis section
     st.write("## Text Analysis")
     
-    # Text input
-    user_input = st.text_area("Type or paste text here:", height=150)
+    # Define sample texts
+    sample_texts = {
+        "": "",
+        "Positive emotion": "I am so happy today! Everything is going well and I feel blessed.",
+        "Negative emotion": "I'm feeling really sad and depressed about what happened yesterday.",
+        "Violent content": "He threatened to hurt her if she ever tried to leave the relationship.",
+        "Hate speech": "I can't stand those fucking people, they should all be banned from our country! and kicked out all the fucking bitches",
+        "Neutral text": "The weather forecast shows it will be sunny tomorrow with a high of 75 degrees."
+    }
     
-    col1, col2 = st.columns([1, 5])
-    with col1:
-        analyze_button = st.button("Analyze")
+    # Function to update user input when sample is selected
+    def on_sample_change():
+        selected = st.session_state.sample_selector
+        if selected and selected != "":
+            st.session_state.user_input = sample_texts[selected]
     
-    # Show sample text options
-    with col2:
-        sample_texts = {
-            "": "",
-            "Positive emotion": "I am so happy today! Everything is going well and I feel blessed.",
-            "Negative emotion": "I'm feeling really sad and depressed about what happened yesterday.",
-            "Violent content": "He threatened to hurt her if she ever tried to leave the relationship.",
-            "Hate speech": "I can't stand those people, they should all be banned from our country!",
-            "Neutral text": "The weather forecast shows it will be sunny tomorrow with a high of 75 degrees."
-        }
-        selected_sample = st.selectbox("Or try a sample:", options=list(sample_texts.keys()))
-        if selected_sample and selected_sample != "":
-            user_input = sample_texts[selected_sample]
+    # Create a container with custom CSS for better visual appearance
+    st.markdown("""
+    <style>
+    .input-section {
+        background-color: #f0f2f6;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .stButton button {
+        width: 100%;
+        height: 3rem;
+        font-size: 1rem;
+        font-weight: bold;
+
+    }
+    .right-align {
+        display: flex;
+        justify-content: flex-end;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    with st.container():
+         
+        # First row: Sample selector
+        st.selectbox(
+            "Try a sample text or create your own:", 
+            options=list(sample_texts.keys()),
+            key="sample_selector",
+            on_change=on_sample_change
+        )
+        
+        # Second row: Text input area
+        user_input = st.text_area(
+            "Enter or paste text to analyze:", 
+            height=150, 
+            key="user_input",
+            value=st.session_state.user_input
+        )
+        
+        # Third row: Analyze button aligned to the right
+        col1, col2 = st.columns([3, 1])
+        with col2:
+            analyze_button = st.button("🔍 Analyze Text")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+ 
+
     
     # Process and display results
     if analyze_button and user_input:
