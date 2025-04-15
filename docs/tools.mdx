@@ -1,0 +1,98 @@
+# 6. Methodology
+
+## Research Approach
+This project employs a **quantitative and experimental approach** to develop a multi-task learning model for natural language processing. The research follows a structured methodology that combines data preprocessing, model architecture design, training, and evaluation to create a system capable of simultaneously classifying emotions, violence, and hate speech in text data.
+
+## Tools, Technologies, and Frameworks Used
+
+### Programming Languages and Libraries
+- **Python**: Primary programming language
+- **TensorFlow/Keras**: Deep learning framework for model development
+- **NLTK**: Natural Language Toolkit for text preprocessing
+- **Pandas**: Data manipulation and analysis
+- **NumPy**: Numerical computing
+- **Scikit-learn**: Machine learning utilities
+- **Matplotlib/Seaborn**: Data visualization
+
+### Development Environment
+- **Jupyter Notebooks**: Interactive development and experimentation
+- **Kaggle API**: For dataset retrieval
+- **Version Control**: Maintaining model checkpoints and iterations
+
+## Data Collection Techniques
+
+### Dataset Sources
+The project utilizes three distinct datasets from Kaggle:
+1. **Emotion Dataset**: Text data labeled with six emotional categories (Sadness, Joy, Love, Anger, Fear, Surprise)
+   - Source: https://www.kaggle.com/datasets/nelgiriyewithana/emotions
+   
+2. **Violence Dataset**: Gender-based violence tweet classification
+   - Categories: Harmful Traditional Practice, Physical Violence, Economic Violence, Emotional Violence, Sexual Violence
+   - Source: https://www.kaggle.com/datasets/gauravduttakiit/gender-based-violence-tweet-classification
+   
+3. **Hate Speech Dataset**: Text labeled as Hate Speech, Offensive Speech, or Neither
+   - Source: https://www.kaggle.com/datasets/mrmorj/hate-speech-and-offensive-language-dataset
+
+### Data Preparation
+- **Data Cleaning**: Removal of unwanted columns, handling null values
+- **Data Balancing**: Addressing class imbalances through sampling techniques
+- **Text Preprocessing Pipeline**:
+  - Lowercase conversion
+  - URL, mention, and hashtag removal
+  - Number and punctuation removal
+  - Tokenization
+  - Stopword removal
+  - Lemmatization
+
+## Algorithms and Models Used
+
+### Core Model Architecture
+The project implements a **Multi-Task Learning (MTL)** approach using a shared-private neural network architecture:
+
+1. **Shared Components**:
+   - Embedding Layer: Converts text tokens into dense vector representations
+   - LSTM Layer: Captures sequential patterns and contextual information in text
+
+2. **Task-Specific Components**:
+   - Task-specific pooling layers
+   - Task-specific dense output layers for each classification task
+
+### Key Technical Components
+- **Word Embedding**: 128-dimensional word vectors
+- **Sequence Processing**: LSTM with 64 units returning sequences
+- **Global Average Pooling**: For feature extraction from LSTM outputs
+- **Dropout (0.5)**: For regularization to prevent overfitting
+- **Task-Specific Softmax Layers**: For multi-class predictions
+
+## Experimental Setup
+
+### Data Processing
+- **Tokenization**: Custom tokenizers for each task with vocabulary size up to 10,000 words
+- **Sequence Padding**: Fixed length of 50 tokens per sample
+- **Train-Validation Split**: 80% training, 20% validation for each dataset
+
+### Training Configuration
+- **Loss Function**: Sparse Categorical Crossentropy for each task
+- **Optimizer**: Adam with learning rate of 0.001
+- **Task Weighting**: [1.0, 1.5, 1.0] for emotion, violence, and hate speech tasks respectively
+- **Batch Size**: 4 samples
+- **Epochs**: Up to 20 with early stopping based on validation loss
+- **Learning Rate Schedule**: Reduction on plateau with factor 0.2, patience 3
+
+### Evaluation Metrics
+- **Accuracy**: Classification accuracy for each task
+- **Loss**: Categorical crossentropy loss
+- **Confusion Matrices**: To analyze class-wise performance
+- **Per-Class Metrics**: Precision, recall, and F1-score for each class in each task
+
+### Model Training Monitoring
+- **Early Stopping**: To prevent overfitting
+- **Model Checkpointing**: Saving the best model based on validation loss
+- **Learning Rate Reduction**: Adaptive learning rate based on validation performance
+- **Training History Visualization**: Loss and accuracy curves for each task
+
+## Implementation Details
+- **Model Portability**: Saved tokenizers and model checkpoints for deployment
+- **Inference Pipeline**: Custom prediction function for new text samples
+- **Validation Strategy**: Performance analysis using confusion matrices and classification metrics
+- **Multi-Task Parameter Sharing**: Knowledge transfer between related NLP tasks through shared layers
